@@ -28,15 +28,12 @@ class ReadGraphsFromFile:
 
 class Graph:
     def __init__(self, n, adj_list):
-        # self.V = num
-        # self.graph = [None] * self.V
-
         self.size = n
         self.points = {}
         for i in range(n):
-            self.points[i + 1] = []
+            self.points[i] = []
         for j in range(n):
             for v in adj_list[j]:
                 if v != '0':
-                    self.points[j+1].append(int(v))
+                    self.points[j].append(int(v)-1)
 
