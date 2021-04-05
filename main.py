@@ -11,12 +11,6 @@ if __name__ == '__main__':
 
     for graph in graph_list:
         checker = Checker(graph)
-        print(graph.points)
-        # checker.bfs(1)
-        # print(checker.bfs(1))
-        # if checker.isCyclic():
-        #     print("Graph contains cycle!")
-        # else:
-        #     print("Graph does not contain cycle ")
+        # print(graph.points)
         checker.print_results()
 

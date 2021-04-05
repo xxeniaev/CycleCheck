@@ -4,8 +4,8 @@ import collections
 class Checker:
     def __init__(self, graph):
         self.graph = graph
+        self.parent = [[]] * self.graph.size
         self.first_cycle = []
-        self.parent = [-1] * self.graph.size
 
     def isCyclicConnected(self, s, visited: list):
         adj = self.graph.points
@@ -18,31 +18,24 @@ class Checker:
 
         while q:
             u = q.popleft()
-            print("Big ", u, " q=", q)
 
             for v in adj[u]:
-                # print(adj[u])
                 if not visited[v]:
                     visited[v] = True
                     q.append(v)
-                    self.parent[v] = u
-                    print("New step. U=", u, " v=", v, " parent=", self.parent, " q=", q)
-                elif self.parent[u] is not v:
-                    stop_node = self.parent[v]
-                    self.parent[v] = u
-                    print("u" , u)
-                    print("v" , v)
-
-                    current = v
-                    out = []
-                    print("current" , current)
-                    print("self.parent" , self.parent)
-                    while current is not stop_node:
-                        out.append(current)
-                        current = self.parent[current]
-                    out.append(stop_node)
-                    self.first_cycle = set(out)
-                    print("Answer: ", out)
+                    self.parent[v] = [u] + self.parent[u]
+                elif self.parent[u][0] is not v:
+                    flag = False
+                    for i in range(len(self.parent[v])):
+                        for j in range(len(self.parent[u])):
+                            if self.parent[v][i] == self.parent[u][j]:
+                                if flag:
+                                    continue
+                                flag = True
+                                curV = self.parent[v].index(self.parent[v][i]) + 1
+                                curU = self.parent[u].index(self.parent[v][i]) + 1
+                                cycle = self.parent[v][:curV] + self.parent[u][:curU] + [u, v]
+                                self.first_cycle = list(map(lambda x: x + 1, cycle))
                     return True
         return False
 
@@ -62,5 +55,5 @@ class Checker:
             f.close()
         else:
             f = open("out.txt", "a")
-            f.write("N\n" + str(self.first_cycle) + "\n")
+            f.write("N\n" + str(set(self.first_cycle)) + "\n")
             f.close()
