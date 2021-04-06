@@ -2,3 +2,4 @@
 venv/*
 out.txt
 in.txt
+__pycache__/
